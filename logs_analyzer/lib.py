@@ -1,3 +1,4 @@
+import re
 from logs_analyzer.settings import *
 from logs_analyzer.validators import *
 from datetime import datetime
@@ -12,12 +13,12 @@ def get_service_settings(service_name):
     return SERVICES_SWITCHER.get(service_name)
 
 
-def get_date_filter(service, minute=datetime.now().minute, hour=datetime.now().hour,
+def get_date_filter(settings, minute=datetime.now().minute, hour=datetime.now().hour,
                     day=datetime.now().day, month=datetime.now().month,
                     year=datetime.now().year):
     """
-    Get date filter that will be used to filter data from logs
-    :param service: string
+    Get date filter that will be used to filter data from logs based on the params
+    :param settings: dict
     :param minute: int
     :param hour: int
     :param day: int
@@ -25,10 +26,6 @@ def get_date_filter(service, minute=datetime.now().minute, hour=datetime.now().h
     :param year: int
     :return: string
     """
-    settings = get_service_settings(service)
-    if settings is None:
-        raise Exception("There is no configuration for the service \""+service+"\"!")
-
     if not is_valid_year(year) or not is_valid_month(month) or not is_valid_day(day) \
             or not is_valid_hour(hour) or not is_valid_minute(minute):
         raise Exception("Date elements aren't valid")
@@ -44,3 +41,51 @@ def get_date_filter(service, minute=datetime.now().minute, hour=datetime.now().h
     else:
         raise Exception("Date elements aren't valid")
     return date_filter
+
+
+def filter_data(log_filter, data=None, filepath=None, is_casesensitive=True, is_regex=False):
+    """
+    Filter received data/file content and return the results
+    :except IOError:
+    :except EnvironmentError:
+    :raises Exception:
+    :param log_filter: string
+    :param data: string
+    :param filepath: string
+    :param is_casesensitive: boolean
+    :param is_regex: boolean
+    :return: string
+    """
+    return_data = ""
+    if filepath:
+        try:
+            with open(filepath, 'r') as file_object:
+                for line in file_object:
+                    if __check_match(line, log_filter, is_regex, is_casesensitive):
+                        return_data += line
+            return return_data
+        except (IOError, EnvironmentError) as e:
+            print(e.strerror)
+            exit(2)
+    elif data:
+        for line in data.splitlines():
+            if __check_match(line, log_filter, is_regex, is_casesensitive):
+                return_data += line+"\n"
+        return return_data
+    else:
+        raise Exception("Data and filepath values are NULL!")
+
+
+def __check_match(line, filter_pattern, is_regex, is_casesensitive):
+    """
+    Check if line contains/matches filter patter
+    :param line: string
+    :param filter_pattern: string
+    :param is_regex: boolean
+    :param is_casesensitive: boolean
+    :return: boolean
+    """
+    if is_regex:
+        return re.match(filter_pattern, line) if is_casesensitive else re.match(filter_pattern, line, re.IGNORECASE)
+    else:
+        return (filter_pattern in line) if is_casesensitive else (filter_pattern.lower() in line.lower())
