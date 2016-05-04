@@ -13,12 +13,12 @@ class TestLib(TestCase):
                          '[16/Jan/1989', "get_date_filter#2")
         self.assertEqual(get_date_filter(nginx_settings, '*'), datetime.now().strftime("[%d/%b/%Y:%H"),
                          "get_date_filter#3")
-        nginx_settings = get_service_settings('apache2')
-        self.assertEqual(get_date_filter(nginx_settings, 13, 13, 16, 1, 1989),
+        apache2_settings = get_service_settings('apache2')
+        self.assertEqual(get_date_filter(apache2_settings, 13, 13, 16, 1, 1989),
                          '[16/Jan/1989:13:13', "get_date_filter#4")
-        self.assertEqual(get_date_filter(nginx_settings, '*', '*', 16, 1, 1989),
+        self.assertEqual(get_date_filter(apache2_settings, '*', '*', 16, 1, 1989),
                          '[16/Jan/1989', "get_date_filter#5")
-        self.assertEqual(get_date_filter(nginx_settings, '*'), datetime.now().strftime("[%d/%b/%Y:%H"),
+        self.assertEqual(get_date_filter(apache2_settings, '*'), datetime.now().strftime("[%d/%b/%Y:%H"),
                          "get_date_filter#6")
 
     def test_filter_data(self):
@@ -30,8 +30,8 @@ class TestLib(TestCase):
         data = filter_data(date_filter, data=data)
         self.assertEqual(len(data.split("\n")), 28, "filter_data#1")
         self.assertRaises(Exception, filter_data, log_filter='192.168.5')
-        nginx_settings = get_service_settings('apache2')
-        date_filter = get_date_filter(nginx_settings, 27, 11, 4, 5, 2016)
+        apache2_settings = get_service_settings('apache2')
+        date_filter = get_date_filter(apache2_settings, 27, 11, 4, 5, 2016)
         file_name = os.path.join(base_dir, 'logs-samples/apache1.sample')
         data = filter_data('127.0.0.1', filepath=file_name)
         data = filter_data(date_filter, data=data)
@@ -46,9 +46,9 @@ class TestLib(TestCase):
         requests = get_web_requests(data, nginx_settings['request_model'])
         self.assertEqual(len(requests), 2, "get_requests#1")
         self.assertTrue('daedalu5' in requests[0].values(), "get_requests#2")
-        nginx_settings = get_service_settings('apache2')
+        apache2_settings = get_service_settings('apache2')
         file_name = os.path.join(base_dir, 'logs-samples/apache1.sample')
         data = filter_data('127.0.1.1', filepath=file_name)
-        requests = get_web_requests(data, nginx_settings['request_model'])
+        requests = get_web_requests(data, apache2_settings['request_model'])
         self.assertEqual(len(requests), 1, "get_requests#3")
         self.assertTrue('daedalu5' in requests[0].values(), "get_requests#4")
