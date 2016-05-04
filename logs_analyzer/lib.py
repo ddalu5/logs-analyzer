@@ -94,7 +94,7 @@ def __check_match(line, filter_pattern, is_regex, is_casesensitive):
 
 def get_web_requests(data, pattern):
     """
-    Analyze data (from the logs) and return list of request formatted as the model (pattern) defined.
+    Analyze data (from the logs) and return list of requests formatted as the model (pattern) defined.
     :param data:
     :param pattern:
     :return: list of dicts

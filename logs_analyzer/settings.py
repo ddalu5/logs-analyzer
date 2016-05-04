@@ -15,6 +15,24 @@ DEFAULT_NGINX = {
 }
 
 
+DEFAULT_APACHE2 = {
+    'dir_path': '/var/log/apache2/',
+    'accesslog_filename': 'access.log',
+    'errorlog_filename': 'error.log',
+    'dateminutes_format': '[%d/%b/%Y:%H:%M',
+    'datehours_format': '[%d/%b/%Y:%H',
+    'datedays_format': '[%d/%b/%Y',
+    'request_model': (r''
+                      '(\d+.\d+.\d+.\d+)\s-\s-\s'
+                      '\[(.+)\]\s'
+                      '(?i)"?(GET|POST|PUT|HEAD|DELETE|OPTIONS|CONNECT|PATCH)\s(.+)\s\w+/.+"'
+                      '\s(\d+)\s'
+                      '\d+\s"(.+)"\s'
+                      '"(.+)"')
+}
+
+
 SERVICES_SWITCHER = {
-    'nginx': DEFAULT_NGINX
+    'nginx': DEFAULT_NGINX,
+    'apache2': DEFAULT_APACHE2
 }
