@@ -18,6 +18,7 @@ def get_date_filter(settings, minute=datetime.now().minute, hour=datetime.now().
                     year=datetime.now().year):
     """
     Get date filter that will be used to filter data from logs based on the params
+    :raises Exception:
     :param settings: dict
     :param minute: int
     :param hour: int
@@ -89,3 +90,19 @@ def __check_match(line, filter_pattern, is_regex, is_casesensitive):
         return re.match(filter_pattern, line) if is_casesensitive else re.match(filter_pattern, line, re.IGNORECASE)
     else:
         return (filter_pattern in line) if is_casesensitive else (filter_pattern.lower() in line.lower())
+
+
+def get_requests(data, pattern):
+    """
+    Analyze data (from the logs) and return list of request formated as the model (pattern) defined
+    :param data:
+    :param pattern:
+    :return: list of dicts
+    """
+    requests_dict = re.findall(pattern, data)
+    requests = []
+    for request_tuple in requests_dict:
+        requests.append({'IP': request_tuple[0], 'datetime': request_tuple[1], 'method': request_tuple[2],
+                         'route': request_tuple[3], 'code': request_tuple[4], 'referrer': request_tuple[5],
+                         'useragent': request_tuple[6]})
+    return requests
