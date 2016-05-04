@@ -24,11 +24,11 @@ class TestLib(TestCase):
         self.assertEqual(len(data.split("\n")), 28, "filter_data#1")
         self.assertRaises(Exception, filter_data, log_filter='192.168.5')
 
-    def test_get_requests_nginx(self):
+    def test_get_web_requests_nginx(self):
         nginx_settings = get_service_settings('nginx')
         base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         file_name = os.path.join(base_dir, 'logs-samples/nginx1.sample')
         data = filter_data('192.10.1.1', filepath=file_name)
-        requests = get_requests(data, nginx_settings['request_model'])
+        requests = get_web_requests(data, nginx_settings['request_model'])
         self.assertEqual(len(requests), 2, "get_requests#1")
         self.assertTrue('daedalu5' in requests[0].values())
