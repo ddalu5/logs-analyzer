@@ -20,6 +20,11 @@ class TestLib(TestCase):
                          '[16/Jan/1989', "get_date_filter#5")
         self.assertEqual(get_date_filter(apache2_settings, '*'), datetime.now().strftime("[%d/%b/%Y:%H"),
                          "get_date_filter#6")
+        auth_settings = get_service_settings('auth')
+        self.assertEqual(get_date_filter(auth_settings, 13, 13, 16, 1),
+                         'Jan 16 13:13:', "get_date_filter#7")
+        self.assertEqual(get_date_filter(auth_settings, '*', '*', 16, 1),
+                         'Jan 16 ', "get_date_filter#8")
 
     def test_filter_data(self):
         nginx_settings = get_service_settings('nginx')
@@ -37,8 +42,14 @@ class TestLib(TestCase):
         data = filter_data(date_filter, data=data)
         self.assertEqual(len(data.split("\n")), 34, "filter_data#2")
         self.assertRaises(Exception, filter_data, log_filter='127.0.0.1')
+        auth_settings = get_service_settings('auth')
+        date_filter = get_date_filter(auth_settings, '*', 22, 4, 5)
+        file_name = os.path.join(base_dir, 'logs-samples/auth.sample')
+        data = filter_data('120.25.229.167', filepath=file_name)
+        data = filter_data(date_filter, data=data)
+        self.assertEqual(len(data.split("\n")), 19, "filter_data#3")
 
-    def test_get_web_requests_nginx(self):
+    def test_get_web_requests(self):
         nginx_settings = get_service_settings('nginx')
         base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         file_name = os.path.join(base_dir, 'logs-samples/nginx1.sample')

@@ -32,7 +32,22 @@ DEFAULT_APACHE2 = {
 }
 
 
+DEFAULT_AUTH = {
+    'dir_path': '/var/log/',
+    'accesslog_filename': 'auth.log',
+    'dateminutes_format': '%b %e %H:%M:',
+    'datehours_format': '%b %e %H:',
+    'datedays_format': '%b %e ',
+    'request_model': (r''
+                      '(\w+\s\s\d+\s\d+:\d+:\d+)\s'
+                      '(\w+)\[\d\]:'
+                      '\s(\d+.\d+.\d+.\d+)'
+                      ':\s(.+)')
+}
+
+
 SERVICES_SWITCHER = {
     'nginx': DEFAULT_NGINX,
-    'apache2': DEFAULT_APACHE2
+    'apache2': DEFAULT_APACHE2,
+    'auth': DEFAULT_AUTH
 }

@@ -106,3 +106,12 @@ def get_web_requests(data, pattern):
                          'route': request_tuple[3], 'code': request_tuple[4], 'referrer': request_tuple[5],
                          'useragent': request_tuple[6]})
     return requests
+
+
+def get_auth_requests(data, pattern):
+    requests_dict = re.findall(pattern, data)
+    requests = []
+    for request_tuple in requests_dict:
+        requests.append({'datetime': request_tuple[0], 'service': request_tuple[1],
+                         'IP': request_tuple[2], 'info': request_tuple[3]})
+    return requests
