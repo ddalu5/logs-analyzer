@@ -95,8 +95,8 @@ def __check_match(line, filter_pattern, is_regex, is_casesensitive):
 def get_web_requests(data, pattern):
     """
     Analyze data (from the logs) and return list of requests formatted as the model (pattern) defined.
-    :param data:
-    :param pattern:
+    :param data: string
+    :param pattern: string
     :return: list of dicts
     """
     requests_dict = re.findall(pattern, data)
@@ -109,9 +109,15 @@ def get_web_requests(data, pattern):
 
 
 def get_auth_requests(data, pattern):
+    """
+    Analyze data (from the logs) and return list of auth requests formatted as the model (pattern) defined.
+    :param data: string
+    :param pattern: string
+    :return: list of dicts
+    """
     requests_dict = re.findall(pattern, data)
     requests = []
     for request_tuple in requests_dict:
         requests.append({'datetime': request_tuple[0], 'service': request_tuple[1],
-                         'IP': request_tuple[2], 'info': request_tuple[3]})
+                         'info': request_tuple[2]})
     return requests

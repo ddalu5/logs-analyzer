@@ -40,9 +40,8 @@ DEFAULT_AUTH = {
     'datedays_format': '%b %e ',
     'request_model': (r''
                       '(\w+\s\s\d+\s\d+:\d+:\d+)\s'
-                      '(\w+)\[\d\]:'
-                      '\s(\d+.\d+.\d+.\d+)'
-                      ':\s(.+)')
+                      '\w+\s(\w+)\[\d+\]:\s'
+                      '(.+)')
 }
 
 
