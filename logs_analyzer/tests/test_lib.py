@@ -73,4 +73,6 @@ class TestLib(TestCase):
         data = filter_data(date_filter, data=data)
         requests = get_auth_requests(data, auth_settings['request_model'])
         self.assertEqual(len(requests), 18, "get_auth_requests#1")
+        self.assertEqual(requests[17]['INVALID_PASS_USER'], 'root', "get_auth_requests#2")
+        self.assertEqual(requests[15]['INVALID_USER'], 'admin', "get_auth_requests#3")
 
