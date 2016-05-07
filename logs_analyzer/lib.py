@@ -102,9 +102,9 @@ def get_web_requests(data, pattern):
     requests_dict = re.findall(pattern, data)
     requests = []
     for request_tuple in requests_dict:
-        requests.append({'IP': request_tuple[0], 'datetime': request_tuple[1], 'method': request_tuple[2],
-                         'route': request_tuple[3], 'code': request_tuple[4], 'referrer': request_tuple[5],
-                         'useragent': request_tuple[6]})
+        requests.append({'IP': request_tuple[0], 'DATETIME': request_tuple[1], 'METHOD': request_tuple[2],
+                         'ROUTE': request_tuple[3], 'CODE': request_tuple[4], 'REFERRER': request_tuple[5],
+                         'USERAGENT': request_tuple[6]})
     return requests
 
 
