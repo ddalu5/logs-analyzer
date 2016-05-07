@@ -29,7 +29,7 @@ class TestLib(TestCase):
     def test_filter_data(self):
         nginx_settings = get_service_settings('nginx')
         date_filter = get_date_filter(nginx_settings, '*', '*', 27, 4, 2016)
-        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         file_name = os.path.join(base_dir, 'logs-samples/nginx1.sample')
         data = filter_data('192.168.5', filepath=file_name)
         data = filter_data(date_filter, data=data)
@@ -51,7 +51,7 @@ class TestLib(TestCase):
 
     def test_get_web_requests(self):
         nginx_settings = get_service_settings('nginx')
-        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         file_name = os.path.join(base_dir, 'logs-samples/nginx1.sample')
         data = filter_data('192.10.1.1', filepath=file_name)
         requests = get_web_requests(data, nginx_settings['request_model'])
@@ -66,7 +66,7 @@ class TestLib(TestCase):
 
     def test_get_auth_requests(self):
         auth_settings = get_service_settings('auth')
-        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         date_filter = get_date_filter(auth_settings, '*', 22, 4, 5)
         file_name = os.path.join(base_dir, 'logs-samples/auth.sample')
         data = filter_data('120.25.229.167', filepath=file_name)
