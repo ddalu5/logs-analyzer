@@ -79,7 +79,7 @@ def filter_data(log_filter, data=None, filepath=None, is_casesensitive=True, is_
 
 def __check_match(line, filter_pattern, is_regex, is_casesensitive):
     """
-    Check if line contains/matches filter patter
+    Check if line contains/matches filter pattern
     :param line: string
     :param filter_pattern: string
     :param is_regex: boolean
