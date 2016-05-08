@@ -50,7 +50,7 @@ DEFAULT_AUTH = {
                       '(.+)'),
     'date_pattern': (r''
                      '(\w+)\s(\s\d+|\d+)\s(\d+):(\d+):(\d+)'),
-    'date_keys': {'day': 1, 'month': 0, 'hour': 2, 'minute': 3, 'second': 4}
+    'date_keys': {'month': 0, 'day': 1, 'hour': 2, 'minute': 3, 'second': 4}
 }
 
 

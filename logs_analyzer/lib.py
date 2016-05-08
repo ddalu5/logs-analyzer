@@ -117,7 +117,7 @@ def get_web_requests(data, pattern, date_pattern=None, date_keys=None):
     return requests
 
 
-def get_auth_requests(data, pattern):
+def get_auth_requests(data, pattern, date_pattern=None, date_keys=None):
     """
     Analyze data (from the logs) and return list of auth requests formatted as the model (pattern) defined.
     :param data: string
@@ -127,8 +127,12 @@ def get_auth_requests(data, pattern):
     requests_dict = re.findall(pattern, data)
     requests = []
     for request_tuple in requests_dict:
+        if date_pattern:
+            str_datetime = __get_iso_datetime(request_tuple[0], date_pattern, date_keys)
+        else:
+            str_datetime = request_tuple[0]
         data = analyze_auth_request(request_tuple[2])
-        data['DATETIME'] = request_tuple[0]
+        data['DATETIME'] = str_datetime
         data['SERVICE'] = request_tuple[1]
         requests.append(data)
     return requests
