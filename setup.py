@@ -3,8 +3,9 @@ from setuptools import setup, find_packages
 
 setup(name='logs-analyzer',
       version='0.1',
-      description='logs-analyzer helps you analyze logs.',
-      long_description='logs-analyzer helps you analyze logs.',
+      description='Logs-analyzer is a library containing functions that can help you extract usable data from logs.',
+      long_description='Logs-analyzer is a library containing functions '
+                       'that can help you extract usable data from logs.',
       url='https://github.com/ddalu5/logs-analyzer',
       author='Salah OSFOR',
       author_email='osfor.salah@gmail.com',

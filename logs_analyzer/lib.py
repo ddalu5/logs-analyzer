@@ -1,4 +1,5 @@
 import re
+import calendar
 from logs_analyzer.settings import *
 from logs_analyzer.validators import *
 from datetime import datetime
@@ -92,19 +93,27 @@ def __check_match(line, filter_pattern, is_regex, is_casesensitive):
         return (filter_pattern in line) if is_casesensitive else (filter_pattern.lower() in line.lower())
 
 
-def get_web_requests(data, pattern):
+def get_web_requests(data, pattern, date_pattern=None, date_keys=None):
     """
     Analyze data (from the logs) and return list of requests formatted as the model (pattern) defined.
     :param data: string
     :param pattern: string
-    :return: list of dicts
+    :param date_pattern: regex|None
+    :param date_keys: dict|None
+    :return: list
     """
+    if date_pattern and not date_keys:
+        raise Exception("date_keys is not defined")
     requests_dict = re.findall(pattern, data)
     requests = []
     for request_tuple in requests_dict:
-        requests.append({'IP': request_tuple[0], 'DATETIME': request_tuple[1], 'METHOD': request_tuple[2],
-                         'ROUTE': request_tuple[3], 'CODE': request_tuple[4], 'REFERRER': request_tuple[5],
-                         'USERAGENT': request_tuple[6]})
+        if date_pattern:
+            str_datetime = __get_iso_datetime(request_tuple[1], date_pattern, date_keys)
+        else:
+            str_datetime = request_tuple[1]
+        requests.append({'IP': request_tuple[0], 'DATETIME': str_datetime,
+                         'METHOD': request_tuple[2], 'ROUTE': request_tuple[3], 'CODE': request_tuple[4],
+                         'REFERRER': request_tuple[5], 'USERAGENT': request_tuple[6]})
     return requests
 
 
@@ -141,3 +150,19 @@ def analyze_auth_request(request_info):
             'INVALID_PASS_USER': invalid_pass_user[0] if invalid_pass_user else None,
             'IS_PREAUTH': is_preauth,
             'IS_CLOSED': is_closed}
+
+
+def __get_iso_datetime(str_date, pattern, keys):
+    """
+    Change raw datetime from logs to ISO 8601 format.
+    :param str_date: string
+    :param pattern: regex (date_pattern from settings)
+    :param keys: dict (date_keys from settings)
+    :return: string
+    """
+    months_dict = {v: k for k, v in enumerate(calendar.month_abbr)}
+    a_date = re.findall(pattern, str_date)[0]
+    d_datetime = datetime(int(a_date[keys['year']]) if 'year' in keys else datetime.now().year,
+                          months_dict[a_date[keys['month']]], int(a_date[keys['day']].strip()),
+                          int(a_date[keys['hour']]), int(a_date[keys['minute']]), int(a_date[keys['second']]))
+    return d_datetime.isoformat(' ')

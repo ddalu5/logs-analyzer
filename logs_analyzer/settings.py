@@ -11,7 +11,10 @@ DEFAULT_NGINX = {
                       '(?i)"?(GET|POST|PUT|HEAD|DELETE|OPTIONS|CONNECT|PATCH)\s(.+)\s\w+/.+"'
                       '\s(\d+)\s'
                       '\d+\s"(.+)"\s'
-                      '"(.+)"')
+                      '"(.+)"'),
+    'date_pattern': (r''
+                     '(\d+)/(\w+)/(\d+):(\d+):(\d+):(\d+)'),
+    'date_keys': {'day': 0, 'month': 1, 'year': 2, 'hour': 3, 'minute': 4, 'second': 5}
 }
 
 
@@ -28,7 +31,10 @@ DEFAULT_APACHE2 = {
                       '(?i)"?(\w+)\s(.+)\s\w+/.+"'
                       '\s(\d+)\s'
                       '\d+\s"(.+)"\s'
-                      '"(.+)"')
+                      '"(.+)"'),
+    'date_pattern': (r''
+                     '(\d+)/(\w+)/(\d+):(\d+):(\d+):(\d+)'),
+    'date_keys': {'day': 0, 'month': 1, 'year': 2, 'hour': 3, 'minute': 4, 'second': 5}
 }
 
 
@@ -41,7 +47,10 @@ DEFAULT_AUTH = {
     'request_model': (r''
                       '(\w+\s\s\d+\s\d+:\d+:\d+)\s'
                       '\w+\s(\w+)\[\d+\]:\s'
-                      '(.+)')
+                      '(.+)'),
+    'date_pattern': (r''
+                     '(\w+)\s(\s\d+|\d+)\s(\d+):(\d+):(\d+)'),
+    'date_keys': {'day': 1, 'month': 0, 'hour': 2, 'minute': 3, 'second': 4}
 }
 
 

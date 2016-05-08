@@ -1,5 +1,6 @@
 /.idea/
 /dist/
+/logs_analyzer.egg-info/
 *.pyc
 *.egg
 *.log

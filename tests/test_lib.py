@@ -57,12 +57,18 @@ class TestLib(TestCase):
         requests = get_web_requests(data, nginx_settings['request_model'])
         self.assertEqual(len(requests), 2, "get_web_requests#1")
         self.assertTrue('daedalu5' in requests[0].values(), "get_web_requests#2")
+        requests = get_web_requests(data, nginx_settings['request_model'],
+                                    nginx_settings['date_pattern'], nginx_settings['date_keys'])
+        self.assertEqual(requests[0]['DATETIME'], '2016-04-24 06:26:37', "get_web_requests#3")
         apache2_settings = get_service_settings('apache2')
         file_name = os.path.join(base_dir, 'logs-samples/apache1.sample')
         data = filter_data('127.0.1.1', filepath=file_name)
         requests = get_web_requests(data, apache2_settings['request_model'])
-        self.assertEqual(len(requests), 1, "get_web_requests#3")
-        self.assertTrue('daedalu5' in requests[0].values(), "get_web_requests#4")
+        self.assertEqual(len(requests), 1, "get_web_requests#4")
+        self.assertTrue('daedalu5' in requests[0].values(), "get_web_requests#5")
+        requests = get_web_requests(data, apache2_settings['request_model'],
+                                    nginx_settings['date_pattern'], nginx_settings['date_keys'])
+        self.assertEqual(requests[0]['DATETIME'], '2016-05-04 11:31:39', "get_web_requests#3")
 
     def test_get_auth_requests(self):
         auth_settings = get_service_settings('auth')
@@ -75,4 +81,6 @@ class TestLib(TestCase):
         self.assertEqual(len(requests), 18, "get_auth_requests#1")
         self.assertEqual(requests[17]['INVALID_PASS_USER'], 'root', "get_auth_requests#2")
         self.assertEqual(requests[15]['INVALID_USER'], 'admin', "get_auth_requests#3")
+
+
 
