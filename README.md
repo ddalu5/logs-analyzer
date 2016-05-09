@@ -12,7 +12,7 @@ using pip : `pip install logs-analyzer`
 Contains the default settings for the supported logs.
 
 ### NGINX Settings
-```
+```python
 DEFAULT_NGINX = {
     'dir_path': '/var/log/nginx/',
     'accesslog_filename': 'access.log',
@@ -34,7 +34,7 @@ DEFAULT_NGINX = {
 ```
 
 ### Apache2 Settings
-```
+```python
 DEFAULT_APACHE2 = {
     'dir_path': '/var/log/apache2/',
     'accesslog_filename': 'access.log',
@@ -55,7 +55,7 @@ DEFAULT_APACHE2 = {
 }
 ```
 ### Auth Settings
-```
+```python
 DEFAULT_AUTH = {
     'dir_path': '/var/log/',
     'accesslog_filename': 'auth.log',
@@ -75,7 +75,6 @@ DEFAULT_AUTH = {
 ## Main functions
 
 ### Function get_service_settings
-#### Description
 Get default settings for the said service from the settings file, three type
 of logs are supported right now: `nginx`, `apache2` and `auth`.
 #### Parameters
@@ -87,7 +86,6 @@ service doesn't exists.
 `nginx_settings = get_service_settings('nginx')`
 
 ### Function get_date_filter
-#### Description
 Get the date pattern that can be used to filter data from
 logs based on the parameters.
 #### Parameters
@@ -105,9 +103,37 @@ logs based on the parameters.
 #### Return
 Returns date pattern (String).
 #### Sample
-```
+```python
 nginx_settings = get_service_settings('nginx')
 date_pattern = get_date_filter(nginx_settings, 13, 13, 16, 1, 1989)
 print(date_pattern)
 ```
 Prints `[16/Jan/1989:13:13`
+
+### Function filter_data
+Filter received data/file content and return the results.
+#### Parameters
+**log_filter:** string that will be used to filter data
+
+**data:** data to be filtered (String) or None if the data will
+be loaded from a file.
+
+**filepath:** filepath from where data will be loaded or None if
+the data has been passed as a parameter.
+
+**is_casesensitive:** if the filter has to be case sensitive
+(default True).
+
+**is_regex:** if the filter string is a regular expression
+(default False).
+#### Return
+Returns filtered data (String).
+#### Sample
+```python
+nginx_settings = get_service_settings('nginx')
+date_filter = get_date_filter(nginx_settings, '*', '*', 27, 4, 2016)
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+file_name = os.path.join(base_dir, 'logs-samples/nginx1.sample')
+data = filter_data('192.168.5', filepath=file_name)
+data = filter_data(date_filter, data=data)
+```
