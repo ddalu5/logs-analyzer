@@ -92,8 +92,22 @@ Get the date pattern that can be used to filter data from
 logs based on the parameters.
 #### Parameters
 **settings:** the target logs settings.
+
 **minute:** default now, minutes or * to ignore.
+
 **hour:** default now, hours or * to ignore.
+
 **day:** default now, day of month.
+
 **month:** default now, month number.
+
 **year:** default now, year.
+#### Return
+Returns date pattern (String).
+#### Sample
+```
+nginx_settings = get_service_settings('nginx')
+date_pattern = get_date_filter(nginx_settings, 13, 13, 16, 1, 1989)
+print(date_pattern)
+```
+Prints `[16/Jan/1989:13:13`
