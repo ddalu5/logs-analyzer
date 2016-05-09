@@ -137,3 +137,26 @@ file_name = os.path.join(base_dir, 'logs-samples/nginx1.sample')
 data = filter_data('192.168.5', filepath=file_name)
 data = filter_data(date_filter, data=data)
 ```
+
+### Function get_web_requests
+Analyze the web logs (Nginx & Apache2 for now) data and return list of requests
+formatted as the model (pattern) defined.
+#### Parameters
+**data:** (String) data to analyzed.
+
+**pattern:** (Regular expression) used to extract requests.
+
+**date_pattern:** (Regular expression or None) used to extract date elements
+to have ISO formatted dates.
+
+**date_keys:** (List or None) list of extracted date elements placements.
+#### Return
+Returns a List of requests as dictionaries.
+#### Sample
+```python
+apache2_settings = get_service_settings('apache2')
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+file_name = os.path.join(base_dir, 'logs-samples/apache1.sample')
+data = filter_data('127.0.1.1', filepath=file_name)
+requests = get_web_requests(data, apache2_settings['request_model'], nginx_settings['date_pattern'], nginx_settings['date_keys'])
+```
