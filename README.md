@@ -158,5 +158,32 @@ apache2_settings = get_service_settings('apache2')
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 file_name = os.path.join(base_dir, 'logs-samples/apache1.sample')
 data = filter_data('127.0.1.1', filepath=file_name)
-requests = get_web_requests(data, apache2_settings['request_model'], nginx_settings['date_pattern'], nginx_settings['date_keys'])
+requests = get_web_requests(data, apache2_settings['request_model'],
+                            nginx_settings['date_pattern'], nginx_settings['date_keys'])
+```
+
+### Function get_auth_requests
+Analyze the Auth logs data and return list of requests
+formatted as the model (pattern) defined.
+#### Parameters
+**data:** (String) data to analyzed.
+
+**pattern:** (Regular expression) used to extract requests.
+
+**date_pattern:** (Regular expression or None) used to extract date elements
+to have ISO formatted dates.
+
+**date_keys:** (List or None) list of extracted date elements placements.
+#### Return
+Returns a List of requests as dictionaries.
+#### Sample
+```python
+auth_settings = get_service_settings('auth')
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+date_filter = get_date_filter(auth_settings, '*', 22, 4, 5)
+file_name = os.path.join(base_dir, 'logs-samples/auth.sample')
+data = filter_data('120.25.229.167', filepath=file_name)
+data = filter_data(date_filter, data=data)
+requests = get_auth_requests(data, auth_settings['request_model'],
+                                     auth_settings['date_pattern'], auth_settings['date_keys'])
 ```
