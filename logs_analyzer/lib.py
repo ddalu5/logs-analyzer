@@ -18,7 +18,7 @@ def get_date_filter(settings, minute=datetime.now().minute, hour=datetime.now().
                     day=datetime.now().day, month=datetime.now().month,
                     year=datetime.now().year):
     """
-    Get date filter that will be used to filter data from logs based on the params
+    Get the date pattern that can be used to filter data from logs based on the params
     :raises Exception:
     :param settings: dict
     :param minute: int
@@ -166,7 +166,20 @@ def __get_iso_datetime(str_date, pattern, keys):
     """
     months_dict = {v: k for k, v in enumerate(calendar.month_abbr)}
     a_date = re.findall(pattern, str_date)[0]
-    d_datetime = datetime(int(a_date[keys['year']]) if 'year' in keys else datetime.now().year,
+    d_datetime = datetime(int(a_date[keys['year']]) if 'year' in keys else __get_auth_year(),
                           months_dict[a_date[keys['month']]], int(a_date[keys['day']].strip()),
                           int(a_date[keys['hour']]), int(a_date[keys['minute']]), int(a_date[keys['second']]))
     return d_datetime.isoformat(' ')
+
+
+def __get_auth_year():
+    # TODO: Add support for analysis done in different terms
+    """
+    Return the year when the requests happened so there will be no bug if the analyze is done in the new year eve,
+    the library was designed to be used for hourly analysis.
+    :return: int
+    """
+    if datetime.now().month == 1 and datetime.now().day == 1 and datetime.now().hour == 0:
+        return datetime.now().year - 1
+    else:
+        return datetime.now().year
