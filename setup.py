@@ -12,7 +12,6 @@ setup(name='logs-analyzer',
       test_suite='nose.collector',
       tests_require=['nose'],
       classifiers=[
-          'Development Status :: 3 - Alpha',
           'Intended Audience :: Developers',
           'Intended Audience :: System Administrators',
           'Intended Audience :: Information Technology',
