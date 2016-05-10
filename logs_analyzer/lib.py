@@ -45,7 +45,7 @@ def get_date_filter(settings, minute=datetime.now().minute, hour=datetime.now().
     return date_filter
 
 
-def filter_data(log_filter, data=None, filepath=None, is_casesensitive=True, is_regex=False):
+def filter_data(log_filter, data=None, filepath=None, is_casesensitive=True, is_regex=False, is_reverse=False):
     """
     Filter received data/file content and return the results
     :except IOError:
@@ -56,6 +56,7 @@ def filter_data(log_filter, data=None, filepath=None, is_casesensitive=True, is_
     :param filepath: string
     :param is_casesensitive: boolean
     :param is_regex: boolean
+    :param is_reverse: boolean to inverse selection
     :return: string
     """
     return_data = ""
@@ -63,7 +64,7 @@ def filter_data(log_filter, data=None, filepath=None, is_casesensitive=True, is_
         try:
             with open(filepath, 'r') as file_object:
                 for line in file_object:
-                    if __check_match(line, log_filter, is_regex, is_casesensitive):
+                    if __check_match(line, log_filter, is_regex, is_casesensitive, is_reverse):
                         return_data += line
             return return_data
         except (IOError, EnvironmentError) as e:
@@ -71,26 +72,29 @@ def filter_data(log_filter, data=None, filepath=None, is_casesensitive=True, is_
             exit(2)
     elif data:
         for line in data.splitlines():
-            if __check_match(line, log_filter, is_regex, is_casesensitive):
+            if __check_match(line, log_filter, is_regex, is_casesensitive, is_reverse):
                 return_data += line+"\n"
         return return_data
     else:
         raise Exception("Data and filepath values are NULL!")
 
 
-def __check_match(line, filter_pattern, is_regex, is_casesensitive):
+def __check_match(line, filter_pattern, is_regex, is_casesensitive, is_reverse):
     """
     Check if line contains/matches filter pattern
     :param line: string
     :param filter_pattern: string
     :param is_regex: boolean
     :param is_casesensitive: boolean
+    :param is_reverse: boolean
     :return: boolean
     """
     if is_regex:
-        return re.match(filter_pattern, line) if is_casesensitive else re.match(filter_pattern, line, re.IGNORECASE)
+        check_result = re.match(filter_pattern, line) if is_casesensitive \
+            else re.match(filter_pattern, line, re.IGNORECASE)
     else:
-        return (filter_pattern in line) if is_casesensitive else (filter_pattern.lower() in line.lower())
+        check_result = (filter_pattern in line) if is_casesensitive else (filter_pattern.lower() in line.lower())
+    return check_result and not is_reverse
 
 
 def get_web_requests(data, pattern, date_pattern=None, date_keys=None):
