@@ -48,6 +48,8 @@ class TestLib(TestCase):
         data = filter_data('120.25.229.167', filepath=file_name)
         data = filter_data(date_filter, data=data)
         self.assertEqual(len(data.split("\n")), 19, "filter_data#3")
+        data = filter_data('120.25.229.167', filepath=file_name, is_reverse=True)
+        self.assertFalse('120.25.229.167' in data, "filter_data#4")
 
     def test_get_web_requests(self):
         nginx_settings = get_service_settings('nginx')

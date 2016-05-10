@@ -131,6 +131,8 @@ the data has been passed as a parameter.
 
 **is_regex:** if the filter string is a regular expression
 (default False).
+
+**is_reverse:** (boolean) invert selection.
 #### Return
 Returns filtered data (String).
 #### Sample
