@@ -1,4 +1,5 @@
 DEFAULT_NGINX = {
+    'type': 'web0',
     'dir_path': '/var/log/nginx/',
     'accesslog_filename': 'access.log',
     'errorlog_filename': 'error.log',
@@ -8,7 +9,7 @@ DEFAULT_NGINX = {
     'request_model': (r''
                       '(\d+.\d+.\d+.\d+)\s-\s-\s'
                       '\[(.+)\]\s'
-                      '(?i)"?(GET|POST|PUT|HEAD|DELETE|OPTIONS|CONNECT|PATCH)\s(.+)\s\w+/.+"'
+                      '(?i)"?(\w+)\s(.+)\s\w+/.+"'
                       '\s(\d+)\s'
                       '\d+\s"(.+)"\s'
                       '"(.+)"'),
@@ -19,6 +20,7 @@ DEFAULT_NGINX = {
 
 
 DEFAULT_APACHE2 = {
+    'type': 'web0',
     'dir_path': '/var/log/apache2/',
     'accesslog_filename': 'access.log',
     'errorlog_filename': 'error.log',
@@ -39,6 +41,7 @@ DEFAULT_APACHE2 = {
 
 
 DEFAULT_AUTH = {
+    'type': 'auth',
     'dir_path': '/var/log/',
     'accesslog_filename': 'auth.log',
     'dateminutes_format': '%b %e %H:%M:',

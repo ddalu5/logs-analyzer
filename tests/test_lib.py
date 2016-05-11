@@ -86,3 +86,17 @@ class TestLib(TestCase):
         requests = get_auth_requests(data, auth_settings['request_model'],
                                      auth_settings['date_pattern'], auth_settings['date_keys'])
         self.assertEqual(requests[0]['DATETIME'], '2016-05-04 22:00:32', "get_auth_requests#4")
+
+    def test_logsanalyzer(self):
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        auth_logfile = os.path.join(base_dir, 'logs-samples/auth.sample')
+        nginx_logfile = os.path.join(base_dir, 'logs-samples/nginx1.sample')
+        auth_logsanalyzer = LogsAnalyzer('auth', filepath=auth_logfile)
+        nginx_logsanalyzer = LogsAnalyzer('nginx', filepath=nginx_logfile)
+        auth_logsanalyzer.add_filter('120.25.229.167')
+        auth_logsanalyzer.add_date_filter('*', 22, 4, 5)
+        requests = auth_logsanalyzer.get_requests()
+        self.assertEqual(len(requests), 18, "LogsAnalyzer#1")
+        nginx_logsanalyzer.add_filter('192.10.1.1')
+        requests = nginx_logsanalyzer.get_requests()
+        self.assertEqual(len(requests), 2, "LogsAnalyzer#2")

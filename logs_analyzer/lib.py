@@ -204,13 +204,12 @@ class LogsAnalyzer:
         :return:
         """
         self.__filters = []
-        self.settings = get_service_settings(service)
-        if data:
-            self.data = data
-        elif filepath:
+        self.__settings = get_service_settings(service)
+        self.data = data
+        if filepath:
             self.filepath = filepath
         else:
-            self.filepath = self.settings['dir_path']+self.settings['accesslog_filename']
+            self.filepath = self.__settings['dir_path']+self.__settings['accesslog_filename']
 
     def add_filter(self, filter_pattern, is_casesensitive=True, is_regex=False, is_reverse=False):
         """
@@ -227,6 +226,19 @@ class LogsAnalyzer:
             'is_regex': is_regex,
             'is_reverse': is_reverse
         })
+
+    def add_date_filter(self, minute=datetime.now().minute, hour=datetime.now().hour,
+                        day=datetime.now().day, month=datetime.now().month, year=datetime.now().year):
+        """
+        Set datetime filter
+        :param minute: int
+        :param hour: int
+        :param day: int
+        :param month: int
+        :param year: int
+        """
+        date_filter = get_date_filter(self.__settings, minute, hour, day, month, year)
+        self.add_filter(date_filter)
 
     def get_all_filters(self):
         """
@@ -251,7 +263,7 @@ class LogsAnalyzer:
         """
         self.__filters.remove(index)
 
-    def clear_all_filter(self):
+    def clear_all_filters(self):
         """
         Clear all filters
         :return:
@@ -287,3 +299,19 @@ class LogsAnalyzer:
                     if self.check_all_matches(line, self.__filters):
                         to_return += line
         return to_return
+
+    def get_requests(self):
+        """
+        Analyze data (from the logs) and return list of auth requests formatted as the model (pattern) defined.
+        :return:
+        """
+        data = self.filter_all()
+        request_pattern = self.__settings['request_model']
+        date_pattern = self.__settings['date_pattern']
+        date_keys = self.__settings['date_keys']
+        if self.__settings['type'] == 'web0':
+            return get_web_requests(data, request_pattern, date_pattern, date_keys)
+        elif self.__settings['type'] == 'auth':
+            return get_auth_requests(data, request_pattern, date_pattern, date_keys)
+        else:
+            return None
