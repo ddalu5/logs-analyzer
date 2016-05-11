@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Logs-analyzer by ddalu5</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Logs-analyzer</h1>
+      <h2 class="project-tagline">Logs-analyzer is a Python based library containing functions that can help you extract usable data from logs.</h2>
+      <a href="https://github.com/ddalu5/logs-analyzer" class="btn">View on GitHub</a>
+      <a href="https://github.com/ddalu5/logs-analyzer/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/ddalu5/logs-analyzer/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="logs-analyzer" class="anchor" href="#logs-analyzer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Logs-analyzer</h1>
+
+<p>Logs-analyzer is a Python based library containing functions that can help you extract usable data from logs.</p>
+
+<h2>
+<a id="status" class="anchor" href="#status" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Status</h2>
+
+<p><img src="https://codeship.com/projects/b12161a0-f65e-0133-0e7a-7e18ff1a37b8/status?branch=master" alt="Status"></p>
+
+<h2>
+<a id="quickstart" class="anchor" href="#quickstart" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quickstart</h2>
+
+<h3>
+<a id="support" class="anchor" href="#support" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support</h3>
+
+<p><strong>Python 2:</strong> 2.7+</p>
+
+<p><strong>Logs:</strong> Apache2, Nginx, Auth</p>
+
+<h3>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install</h3>
+
+<p>using pip : <code>pip install logs-analyzer</code></p>
+
+<h3>
+<a id="code-sample" class="anchor" href="#code-sample" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Code sample</h3>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> logs_analyzer.lib <span class="pl-k">import</span> LogsAnalyzer
+
+nginx_logsanalyzer <span class="pl-k">=</span> LogsAnalyzer(<span class="pl-s"><span class="pl-pds">'</span>nginx<span class="pl-pds">'</span></span>)
+nginx_logsanalyzer.add_date_filter(<span class="pl-v">minute</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">'</span>*<span class="pl-pds">'</span></span>, <span class="pl-v">hour</span><span class="pl-k">=</span><span class="pl-c1">22</span>, <span class="pl-v">day</span><span class="pl-k">=</span><span class="pl-c1">4</span>, <span class="pl-v">month</span><span class="pl-k">=</span><span class="pl-c1">5</span>)
+nginx_logsanalyzer.add_filter(<span class="pl-s"><span class="pl-pds">'</span>192.10.1.1<span class="pl-pds">'</span></span>)
+requests <span class="pl-k">=</span> nginx_logsanalyzer.get_requests()
+</pre></div>
+
+<h2>
+<a id="non-object-functions" class="anchor" href="#non-object-functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Non-object functions</h2>
+
+<h3>
+<a id="function-get_service_settings" class="anchor" href="#function-get_service_settings" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Function get_service_settings</h3>
+
+<p>Get default settings for the said service from the settings file, three type
+of logs are supported right now: <code>nginx</code>, <code>apache2</code> and <code>auth</code>.</p>
+
+<h4>
+<a id="parameters" class="anchor" href="#parameters" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Parameters</h4>
+
+<p><strong>service_name:</strong> service name  (e.g. nginx, apache2...).</p>
+
+<h4>
+<a id="return" class="anchor" href="#return" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Return</h4>
+
+<p>Returns a dictionary containing the chosen service settings or <code>None</code> if the
+service doesn't exists.</p>
+
+<h4>
+<a id="sample" class="anchor" href="#sample" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sample</h4>
+
+<p><code>nginx_settings = get_service_settings('nginx')</code></p>
+
+<h3>
+<a id="function-get_date_filter" class="anchor" href="#function-get_date_filter" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Function get_date_filter</h3>
+
+<p>Get the date pattern that can be used to filter data from
+logs based on the parameters.</p>
+
+<h4>
+<a id="parameters-1" class="anchor" href="#parameters-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Parameters</h4>
+
+<p><strong>settings:</strong> the target logs settings.</p>
+
+<p><strong>minute:</strong> default now, minutes or * to ignore.</p>
+
+<p><strong>hour:</strong> default now, hours or * to ignore.</p>
+
+<p><strong>day:</strong> default now, day of month.</p>
+
+<p><strong>month:</strong> default now, month number.</p>
+
+<p><strong>year:</strong> default now, year.</p>
+
+<h4>
+<a id="return-1" class="anchor" href="#return-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Return</h4>
+
+<p>Returns date pattern (String).</p>
+
+<h4>
+<a id="sample-1" class="anchor" href="#sample-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sample</h4>
+
+<div class="highlight highlight-source-python"><pre>nginx_settings <span class="pl-k">=</span> get_service_settings(<span class="pl-s"><span class="pl-pds">'</span>nginx<span class="pl-pds">'</span></span>)
+date_pattern <span class="pl-k">=</span> get_date_filter(nginx_settings, <span class="pl-c1">13</span>, <span class="pl-c1">13</span>, <span class="pl-c1">16</span>, <span class="pl-c1">1</span>, <span class="pl-c1">1989</span>)
+<span class="pl-c1">print</span>(date_pattern)</pre></div>
+
+<p>Prints <code>[16/Jan/1989:13:13</code></p>
+
+<h3>
+<a id="function-filter_data" class="anchor" href="#function-filter_data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Function filter_data</h3>
+
+<p>Filter received data/file content and return the results.</p>
+
+<h4>
+<a id="parameters-2" class="anchor" href="#parameters-2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Parameters</h4>
+
+<p><strong>log_filter:</strong> string that will be used to filter data</p>
+
+<p><strong>data:</strong> data to be filtered (String) or None if the data will
+be loaded from a file.</p>
+
+<p><strong>filepath:</strong> filepath from where data will be loaded or None if
+the data has been passed as a parameter.</p>
+
+<p><strong>is_casesensitive:</strong> if the filter has to be case sensitive
+(default True).</p>
+
+<p><strong>is_regex:</strong> if the filter string is a regular expression
+(default False).</p>
+
+<p><strong>is_reverse:</strong> (boolean) invert selection.</p>
+
+<h4>
+<a id="return-2" class="anchor" href="#return-2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Return</h4>
+
+<p>Returns filtered data (String).</p>
+
+<h4>
+<a id="sample-2" class="anchor" href="#sample-2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sample</h4>
+
+<div class="highlight highlight-source-python"><pre>nginx_settings <span class="pl-k">=</span> get_service_settings(<span class="pl-s"><span class="pl-pds">'</span>nginx<span class="pl-pds">'</span></span>)
+date_filter <span class="pl-k">=</span> get_date_filter(nginx_settings, <span class="pl-s"><span class="pl-pds">'</span>*<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>*<span class="pl-pds">'</span></span>, <span class="pl-c1">27</span>, <span class="pl-c1">4</span>, <span class="pl-c1">2016</span>)
+base_dir <span class="pl-k">=</span> os.path.dirname(os.path.dirname(os.path.abspath(<span class="pl-c1">__file__</span>)))
+file_name <span class="pl-k">=</span> os.path.join(base_dir, <span class="pl-s"><span class="pl-pds">'</span>logs-samples/nginx1.sample<span class="pl-pds">'</span></span>)
+data <span class="pl-k">=</span> filter_data(<span class="pl-s"><span class="pl-pds">'</span>192.168.5<span class="pl-pds">'</span></span>, <span class="pl-v">filepath</span><span class="pl-k">=</span>file_name)
+data <span class="pl-k">=</span> filter_data(date_filter, <span class="pl-v">data</span><span class="pl-k">=</span>data)</pre></div>
+
+<h3>
+<a id="function-get_web_requests" class="anchor" href="#function-get_web_requests" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Function get_web_requests</h3>
+
+<p>Analyze the web logs (Nginx &amp; Apache2 for now) data and return list of requests
+formatted as the model (pattern) defined.</p>
+
+<h4>
+<a id="parameters-3" class="anchor" href="#parameters-3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Parameters</h4>
+
+<p><strong>data:</strong> (String) data to analyzed.</p>
+
+<p><strong>pattern:</strong> (Regular expression) used to extract requests.</p>
+
+<p><strong>date_pattern:</strong> (Regular expression or None) used to extract date elements
+to have ISO formatted dates.</p>
+
+<p><strong>date_keys:</strong> (List or None) list of extracted date elements placements.</p>
+
+<h4>
+<a id="return-3" class="anchor" href="#return-3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Return</h4>
+
+<p>Returns a List of requests as dictionaries.</p>
+
+<h4>
+<a id="sample-3" class="anchor" href="#sample-3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sample</h4>
+
+<div class="highlight highlight-source-python"><pre>apache2_settings <span class="pl-k">=</span> get_service_settings(<span class="pl-s"><span class="pl-pds">'</span>apache2<span class="pl-pds">'</span></span>)
+base_dir <span class="pl-k">=</span> os.path.dirname(os.path.dirname(os.path.abspath(<span class="pl-c1">__file__</span>)))
+file_name <span class="pl-k">=</span> os.path.join(base_dir, <span class="pl-s"><span class="pl-pds">'</span>logs-samples/apache1.sample<span class="pl-pds">'</span></span>)
+data <span class="pl-k">=</span> filter_data(<span class="pl-s"><span class="pl-pds">'</span>127.0.1.1<span class="pl-pds">'</span></span>, <span class="pl-v">filepath</span><span class="pl-k">=</span>file_name)
+requests <span class="pl-k">=</span> get_web_requests(data, apache2_settings[<span class="pl-s"><span class="pl-pds">'</span>request_model<span class="pl-pds">'</span></span>],
+                            nginx_settings[<span class="pl-s"><span class="pl-pds">'</span>date_pattern<span class="pl-pds">'</span></span>], nginx_settings[<span class="pl-s"><span class="pl-pds">'</span>date_keys<span class="pl-pds">'</span></span>])</pre></div>
+
+<h3>
+<a id="function-get_auth_requests" class="anchor" href="#function-get_auth_requests" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Function get_auth_requests</h3>
+
+<p>Analyze the Auth logs data and return list of requests
+formatted as the model (pattern) defined.</p>
+
+<h4>
+<a id="parameters-4" class="anchor" href="#parameters-4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Parameters</h4>
+
+<p><strong>data:</strong> (String) data to analyzed.</p>
+
+<p><strong>pattern:</strong> (Regular expression) used to extract requests.</p>
+
+<p><strong>date_pattern:</strong> (Regular expression or None) used to extract date elements
+to have ISO formatted dates.</p>
+
+<p><strong>date_keys:</strong> (List or None) list of extracted date elements placements.</p>
+
+<h4>
+<a id="return-4" class="anchor" href="#return-4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Return</h4>
+
+<p>Returns a List of requests as dictionaries.</p>
+
+<h4>
+<a id="sample-4" class="anchor" href="#sample-4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sample</h4>
+
+<div class="highlight highlight-source-python"><pre>auth_settings <span class="pl-k">=</span> get_service_settings(<span class="pl-s"><span class="pl-pds">'</span>auth<span class="pl-pds">'</span></span>)
+base_dir <span class="pl-k">=</span> os.path.dirname(os.path.dirname(os.path.abspath(<span class="pl-c1">__file__</span>)))
+date_filter <span class="pl-k">=</span> get_date_filter(auth_settings, <span class="pl-s"><span class="pl-pds">'</span>*<span class="pl-pds">'</span></span>, <span class="pl-c1">22</span>, <span class="pl-c1">4</span>, <span class="pl-c1">5</span>)
+file_name <span class="pl-k">=</span> os.path.join(base_dir, <span class="pl-s"><span class="pl-pds">'</span>logs-samples/auth.sample<span class="pl-pds">'</span></span>)
+data <span class="pl-k">=</span> filter_data(<span class="pl-s"><span class="pl-pds">'</span>120.25.229.167<span class="pl-pds">'</span></span>, <span class="pl-v">filepath</span><span class="pl-k">=</span>file_name)
+data <span class="pl-k">=</span> filter_data(date_filter, <span class="pl-v">data</span><span class="pl-k">=</span>data)
+requests <span class="pl-k">=</span> get_auth_requests(data, auth_settings[<span class="pl-s"><span class="pl-pds">'</span>request_model<span class="pl-pds">'</span></span>],
+                                     auth_settings[<span class="pl-s"><span class="pl-pds">'</span>date_pattern<span class="pl-pds">'</span></span>], auth_settings[<span class="pl-s"><span class="pl-pds">'</span>date_keys<span class="pl-pds">'</span></span>])</pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/ddalu5/logs-analyzer">Logs-analyzer</a> is maintained by <a href="https://github.com/ddalu5">ddalu5</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
