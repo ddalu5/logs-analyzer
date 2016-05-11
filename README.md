@@ -9,8 +9,21 @@ Logs-analyzer is a library containing functions that can help you extract usable
 **Development:** ![Codeship Status for ddalu5/logs-analyzer](https://codeship.com/projects/b12161a0-f65e-0133-0e7a-7e18ff1a37b8/status?branch=dev)
 
 
-## How to install
+## Quickstart
+
+### Install
 using pip : `pip install logs-analyzer`
+
+### Code sample
+```python
+from logs_analyzer.lib import LogsAnalyzer
+
+nginx_logsanalyzer = LogsAnalyzer('nginx')
+nginx_logsanalyzer.add_date_filter(minute='*', hour=22, day=4, month=5)
+nginx_logsanalyzer.add_filter('192.10.1.1')
+requests = nginx_logsanalyzer.get_requests()
+
+```
 
 ## Settings
 
@@ -77,7 +90,7 @@ DEFAULT_AUTH = {
 }
 ```
 
-## Main functions
+## Non-object functions
 
 ### Function get_service_settings
 Get default settings for the said service from the settings file, three type

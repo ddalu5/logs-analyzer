@@ -94,7 +94,7 @@ class TestLib(TestCase):
         auth_logsanalyzer = LogsAnalyzer('auth', filepath=auth_logfile)
         nginx_logsanalyzer = LogsAnalyzer('nginx', filepath=nginx_logfile)
         auth_logsanalyzer.add_filter('120.25.229.167')
-        auth_logsanalyzer.add_date_filter('*', 22, 4, 5)
+        auth_logsanalyzer.add_date_filter(minute='*', hour=22, day=4, month=5)
         requests = auth_logsanalyzer.get_requests()
         self.assertEqual(len(requests), 18, "LogsAnalyzer#1")
         nginx_logsanalyzer.add_filter('192.10.1.1')
