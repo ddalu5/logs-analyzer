@@ -11,7 +11,10 @@ def get_service_settings(service_name):
     :param service_name: service name (example: nginx, apache2...)
     :return: service settings if found or None
     """
-    return SERVICES_SWITCHER.get(service_name)
+    if service_name in SERVICES_SWITCHER:
+        return SERVICES_SWITCHER.get(service_name)
+    else:
+        raise Exception("Service \""+service_name+"\" doesn't exists!")
 
 
 def get_date_filter(settings, minute=datetime.now().minute, hour=datetime.now().hour,
@@ -64,7 +67,7 @@ def filter_data(log_filter, data=None, filepath=None, is_casesensitive=True, is_
         try:
             with open(filepath, 'r') as file_object:
                 for line in file_object:
-                    if __check_match(line, log_filter, is_regex, is_casesensitive, is_reverse):
+                    if check_match(line, log_filter, is_regex, is_casesensitive, is_reverse):
                         return_data += line
             return return_data
         except (IOError, EnvironmentError) as e:
@@ -72,14 +75,14 @@ def filter_data(log_filter, data=None, filepath=None, is_casesensitive=True, is_
             exit(2)
     elif data:
         for line in data.splitlines():
-            if __check_match(line, log_filter, is_regex, is_casesensitive, is_reverse):
+            if check_match(line, log_filter, is_regex, is_casesensitive, is_reverse):
                 return_data += line+"\n"
         return return_data
     else:
         raise Exception("Data and filepath values are NULL!")
 
 
-def __check_match(line, filter_pattern, is_regex, is_casesensitive, is_reverse):
+def check_match(line, filter_pattern, is_regex, is_casesensitive, is_reverse):
     """
     Check if line contains/matches filter pattern
     :param line: string
@@ -187,3 +190,100 @@ def __get_auth_year():
         return datetime.now().year - 1
     else:
         return datetime.now().year
+
+
+class LogsAnalyzer:
+
+    def __init__(self, service, data=None, filepath=None):
+        """
+        Constructor, define service (nginx, apache2...), set data or filepath if needed
+        :param service: string: service name (nginx, apache2...)
+        :param data: string: data to be filtered if not from a file
+        :param filepath: string: file path from which the data will be loaded if data isn't defined
+        and you are not using the default service logs filepath
+        :return:
+        """
+        self.__filters = []
+        self.settings = get_service_settings(service)
+        if data:
+            self.data = data
+        elif filepath:
+            self.filepath = filepath
+        else:
+            self.filepath = self.settings['dir_path']+self.settings['accesslog_filename']
+
+    def add_filter(self, filter_pattern, is_casesensitive=True, is_regex=False, is_reverse=False):
+        """
+        Add filter data the filters list
+        :param filter_pattern: boolean
+        :param is_casesensitive: boolean
+        :param is_regex: boolean
+        :param is_reverse: boolean
+        :return:
+        """
+        self.__filters.append({
+            'filter_pattern': filter_pattern,
+            'is_casesensitive': is_casesensitive,
+            'is_regex': is_regex,
+            'is_reverse': is_reverse
+        })
+
+    def get_all_filters(self):
+        """
+        return all defined filters
+        :return: List
+        """
+        return self.__filters
+
+    def get_filter(self, index):
+        """
+        Get a filter data by index
+        :param index:
+        :return: Dictionary
+        """
+        return self.__filters[index]
+
+    def remove_filter(self, index):
+        """
+        Remove one filter from filters list using it's index
+        :param index:
+        :return:
+        """
+        self.__filters.remove(index)
+
+    def clear_all_filter(self):
+        """
+        Clear all filters
+        :return:
+        """
+        self.__filters = []
+
+    def check_all_matches(self, line, filter_patterns):
+        """
+        Check if line contains/matches all filter patterns
+        :param line: String
+        :param filter_patterns: List of dictionaries containing
+        :return: boolean
+        """
+        to_return = None
+        for pattern_data in filter_patterns:
+            tmp_result = check_match(line=line, **pattern_data)
+            to_return = tmp_result if to_return is None else (tmp_result and to_return)
+        return to_return
+
+    def filter_all(self):
+        """
+        Apply all defined patterns and return filtered data
+        :return: string
+        """
+        to_return = ""
+        if self.data:
+            for line in self.data.splitlines():
+                if self.check_all_matches(line, self.__filters):
+                    to_return += line+"\n"
+        else:
+            with open(self.filepath, 'r') as file_object:
+                for line in file_object:
+                    if self.check_all_matches(line, self.__filters):
+                        to_return += line
+        return to_return
