@@ -1,12 +1,15 @@
 # Logs-analyzer
 
-Logs-analyzer is a library containing functions that can help you extract usable data from logs.
+Logs-analyzer is a Python based library containing functions that can help you extract usable data from logs.
 
 ## Status
 
 **Master:** ![Codeship Status for ddalu5/logs-analyzer](https://codeship.com/projects/b12161a0-f65e-0133-0e7a-7e18ff1a37b8/status?branch=master)
 
 ## Quickstart
+
+### Support
+**Python 2:** 2.7+
 
 ### Install
 using pip : `pip install logs-analyzer`
