@@ -39,7 +39,7 @@ service doesn't exists.
 `nginx_settings = get_service_settings('nginx')`
 
 ### Function get_date_filter
-Get the date pattern that can be used to filter data from
+Get the date's pattern that can be used to filter data from
 logs based on the parameters.
 #### Parameters
 **settings:** the target logs settings.
@@ -53,8 +53,7 @@ logs based on the parameters.
 **month:** default now, month number.
 
 **year:** default now, year.
-#### Return
-Returns date pattern (String).
+
 #### Sample
 ```python
 nginx_settings = get_service_settings('nginx')
@@ -105,8 +104,6 @@ formatted as the model (pattern) defined.
 to have ISO formatted dates.
 
 **date_keys:** (List or None) list of extracted date elements placements.
-#### Return
-Returns a List of requests as dictionaries.
 #### Sample
 ```python
 apache2_settings = get_service_settings('apache2')
@@ -129,8 +126,6 @@ formatted as the model (pattern) defined.
 to have ISO formatted dates.
 
 **date_keys:** (List or None) list of extracted date elements placements.
-#### Return
-Returns a List of requests as dictionaries.
 #### Sample
 ```python
 auth_settings = get_service_settings('auth')
