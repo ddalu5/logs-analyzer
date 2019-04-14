@@ -85,7 +85,7 @@ class TestLib(TestCase):
         self.assertEqual(requests[15]['INVALID_USER'], 'admin', "get_auth_requests#3")
         requests = get_auth_requests(data, auth_settings['request_model'],
                                      auth_settings['date_pattern'], auth_settings['date_keys'])
-        self.assertEqual(requests[0]['DATETIME'], '2016-05-04 22:00:32', "get_auth_requests#4")
+        self.assertEqual(requests[0]['DATETIME'][4:], '-05-04 22:00:32', "get_auth_requests#4")
 
     def test_logsanalyzer(self):
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
