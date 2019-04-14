@@ -9,7 +9,8 @@ Logs-analyzer is a Python based library containing functions that can help you e
 ## Quickstart
 
 ### Support
-**Python 2:** 2.7+
+**Python 2:** 2.7
+**Python 3:** 3.6, 3.7
 
 ### Install
 using pip : `pip install logs-analyzer`
