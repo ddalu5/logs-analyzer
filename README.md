@@ -5,11 +5,16 @@ Logs-analyzer is a Python based library containing functions that can help you e
 ## Status
 
 **Master:** ![Codeship Status for ddalu5/logs-analyzer](https://codeship.com/projects/b12161a0-f65e-0133-0e7a-7e18ff1a37b8/status?branch=master)
+ [![Build Status](https://travis-ci.org/ddalu5/logs-analyzer.svg?branch=master)](https://travis-ci.org/ddalu5/logs-analyzer)
+ 
+**Develop:** ![Codeship Status for ddalu5/logs-analyzer](https://codeship.com/projects/b12161a0-f65e-0133-0e7a-7e18ff1a37b8/status?branch=develop)
+ [![Build Status](https://travis-ci.org/ddalu5/logs-analyzer.svg?branch=develop)](https://travis-ci.org/ddalu5/logs-analyzer)
 
 ## Quickstart
 
 ### Support
-**Python 2:** 2.7+
+**Python 2:** 2.7
+**Python 3:** 3.6, 3.7
 
 ### Install
 using pip : `pip install logs-analyzer`
