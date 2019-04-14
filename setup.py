@@ -1,9 +1,13 @@
 from setuptools import setup, find_packages
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
 
 setup(name='logs-analyzer',
-      version='0.5',
+      version='0.5.1',
       description='Logs-analyzer is a library containing functions that can help you extract usable data from logs.',
+      long_description=long_description,
+      long_description_content_type="text/markdown",
       url='https://github.com/ddalu5/logs-analyzer',
       author='Salah OSFOR',
       author_email='osfor.salah@gmail.com',
