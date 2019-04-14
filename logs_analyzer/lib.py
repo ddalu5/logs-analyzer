@@ -129,6 +129,8 @@ def get_auth_requests(data, pattern, date_pattern=None, date_keys=None):
     Analyze data (from the logs) and return list of auth requests formatted as the model (pattern) defined.
     :param data: string
     :param pattern: string
+    :param date_pattern:
+    :param date_keys:
     :return: list of dicts
     """
     requests_dict = re.findall(pattern, data)
