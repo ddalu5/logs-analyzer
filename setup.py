@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='logs-analyzer',
-      version='0.5.1',
+      version='0.5.2',
       description='Logs-analyzer is a library containing functions that can help you extract usable data from logs.',
       long_description=long_description,
       long_description_content_type="text/markdown",
